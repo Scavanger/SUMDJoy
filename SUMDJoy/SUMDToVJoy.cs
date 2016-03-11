@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using vJoyInterfaceWrap;
+
+using Scavanger.RC;
 
 namespace SUMDJoy
 {
@@ -25,13 +26,14 @@ namespace SUMDJoy
         public bool IsvJoyEnabled { get { return _joystick.vJoyEnabled(); } }
         public string vJoyInfo { get { return string.Format("{0} V: {1}", _joystick.GetvJoyProductString(), _joystick.GetvJoySerialNumberString()); } }
 
-        //public bool IsAssignmentCorrect
-        //{
-        //    get
-        //    {
-        //        return !(AxeAssignment.Values.FindDuplicates().Any() || ButtonAssignment.Values.FindDuplicates().Any());
-        //    }
-        //}
+        public bool IsAssignmentCorrect
+        {
+            get
+            {
+                var a = Assignments.Values.Where(v => v != 0);
+                return !(Assignments.Values.Where(v => v != 0).FindDuplicates().Any());
+            }
+        }
 
         public string[] SerialPorts { get { return GetComPorts(); } }
 
@@ -162,32 +164,34 @@ namespace SUMDJoy
                 if (assignment.Key is AxeAssignment)
                 {
                     int axis = assignment.Value - 1;
-                    if (axis < 0)
-                        continue;
+                    int value = 0;
+
+                    if (axis >= 0)
+                        value = CalcStickPos(_sumd.Channels[axis]);
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_X))
-                        _joystickState.AxisX = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisX = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_Y))
-                        _joystickState.AxisY = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisY = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_Z))
-                        _joystickState.AxisZ = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisZ = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_RX))
-                        _joystickState.AxisXRot = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisXRot = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_RY))
-                        _joystickState.AxisYRot = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisYRot = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_RZ))
-                        _joystickState.AxisZRot = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.AxisZRot = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_SL0))
-                        _joystickState.Slider = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.Slider = value;
 
                     if (assignment.Key.Name == AxeAssignment.GetAxeName(HID_USAGES.HID_USAGE_SL1))
-                        _joystickState.Dial = CalcStickPos(_sumd.Channels[axis]);
+                        _joystickState.Dial = value;
 
                 }
                 else if (assignment.Key is ButtonAssignment)

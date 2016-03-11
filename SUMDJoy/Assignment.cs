@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 namespace SUMDJoy
 {
     [DataContract]
+    [KnownType(typeof(NoneAssingment))]
     [KnownType(typeof(AxeAssignment))]
     [KnownType(typeof(ButtonAssignment))]
     public abstract class Assignment

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Threading;
 
-namespace SUMDJoy
+namespace Scavanger.RC
 {
 
     public class SUMD : IDisposable
@@ -61,7 +59,7 @@ namespace SUMDJoy
         public SUMD(string portName) : this()
         {
             if (string.IsNullOrWhiteSpace(portName))
-                throw new ArgumentNullException("port");   
+                throw new ArgumentNullException("port");
 
         }
 
@@ -76,22 +74,23 @@ namespace SUMDJoy
             if (string.IsNullOrWhiteSpace(portName))
                 throw new ArgumentNullException("port");
 
-            if (_port == null)
-                _port = new SerialPort(portName, BAUD_RATE);
-
             if (IsListening)
                 StopListening();
 
-            if (_port.IsOpen)
-                _port.Close();
+            if (_port != null)
+            {
+                if (_port.IsOpen)
+                    _port.Close();
 
+                _port.Dispose();
+            }
             _port = new SerialPort(portName, BAUD_RATE);
         }
 
         public void StartListening()
         {
-            if (IsListening)
-                return;
+            //if (IsListening)
+            //    return;
 
             if (_port == null)
                 throw new InvalidOperationException("ComPort unavailable");
@@ -122,7 +121,7 @@ namespace SUMDJoy
 
                         SumdRecieve((byte)b);
                     }
-                    catch (System.IO.IOException)
+                    catch
                     {
                         IsFrameValid = false;
                         _frameDone = false;

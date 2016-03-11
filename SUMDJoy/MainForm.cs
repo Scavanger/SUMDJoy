@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO.Ports;
 using System.IO;
 
 namespace SUMDJoy
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private SUMDToVJoy _sumdTovJoy;
         private Settings _settings;
         private string _currentSettingsFile;
         private List<ComboBox> _channelComboBoxes;
-        private bool _init = true;
+        private bool _ignorChannelComboBoxes = true;
 
-        public Form1()
+        public MainForm()
         {
             _sumdTovJoy = new SUMDToVJoy();
             _sumdTovJoy.NewFrameRecieved += _sumdTovJoy_NewFrameRecieved;
@@ -72,7 +67,7 @@ namespace SUMDJoy
             labelSumdStatus.Text = "Not connected";
 
             _sumdTovJoy.Start();
-            _init = false;
+            _ignorChannelComboBoxes = false;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -80,7 +75,7 @@ namespace SUMDJoy
             Properties.Settings.Default.LastUserSettingsFile = _currentSettingsFile;
             Properties.Settings.Default.Save();
         }
-        
+
         #region EventHandlers
 
         private void comboBoxComPorts_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,45 +89,65 @@ namespace SUMDJoy
                 toolStripStatusLabel1.Text = ex.Message;
             }
 
-            if (!_init)
-            {
+            if (!_ignorChannelComboBoxes)
                 _sumdTovJoy.Start();
-            }
+
+            labelSumdStatus.Text = "Not Connected";
         }
 
         private void comboBoxvJoyDevice_SelectedValueChanged(object sender, EventArgs e)
         {
             _sumdTovJoy.vJoyDevice = (uint)comboBoxvJoyDevice.SelectedItem;
             _sumdTovJoy.GetvJoyInfos();
+            //_currentSettingsFile = string.Empty;
+            //Text = Application.ProductName;
 
+            _ignorChannelComboBoxes = true;
             _channelComboBoxes.ForEach(comboBox =>
             {
-                if (comboBox.DataSource != null)
-                {
-                    comboBox.DataSource = new BindingSource(_sumdTovJoy.Assignments.Keys.ToList(), null);
-                    comboBox.SelectedItem = _sumdTovJoy.Assignments.Where(a => a.Value == (int)comboBox.Tag).FirstOrDefault().Key;
-                    //(comboBox.BindingContext[comboBox.DataSource] as CurrencyManager).Refresh();
-                }
+                comboBox.DataSource = new BindingSource(_sumdTovJoy.Assignments.Keys.ToList(), null);
+                comboBox.DisplayMember = "Name";
+                comboBox.ValueMember = "Name";
+                comboBox.SelectedItem = _sumdTovJoy.Assignments.Where(a => a.Value == (int)comboBox.Tag).FirstOrDefault().Key;
+                if (comboBox.SelectedItem == null)
+                    comboBox.SelectedItem = new NoneAssingment();
+
             });
+            _ignorChannelComboBoxes = false;
+            LoadSettings(true);
 
         }
 
-        private void comboBoxChannel_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxChannel_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!(sender is ComboBox) && !(sender as ComboBox).Name.Contains("comboBoxChannel"))
                 return;
 
-            if (!_init)
+            if (!_ignorChannelComboBoxes)
             {
-                ComboBox comboBox = sender as ComboBox;
-                int channel = (int)comboBox.Tag;
+                foreach (var key in _sumdTovJoy.Assignments.Keys.ToList())
+                    _sumdTovJoy.Assignments[key] = 0;
 
-                DeleteChannel(channel);
-                _sumdTovJoy.Assignments[comboBox.SelectedItem as Assignment] = channel;
+                _channelComboBoxes.ForEach(comboBox =>
+                {
+                    if (comboBox.SelectedItem != null)
+                        _sumdTovJoy.Assignments[comboBox.SelectedItem as Assignment] = (int)comboBox.Tag;
+                });
+
+                //ComboBox comboBox = sender as ComboBox;
+                //int channel = (int)comboBox.Tag;
+
+                //DeleteChannel(channel);
+                //_sumdTovJoy.Assignments[comboBox.SelectedItem as Assignment] = channel;
             }
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.AddExtension = true;
@@ -154,28 +169,10 @@ namespace SUMDJoy
             }
         }
 
-        private void buttonLoad_Click(object sender, EventArgs e)
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.AddExtension = true;
-            ofd.Multiselect = false;
-            ofd.DefaultExt = "xml";
-            ofd.ValidateNames = true;
-            ofd.Filter = "SUMDJoy XML Config File (*.xml) |*.xml";
-            ofd.RestoreDirectory = true;
-            try
-            {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    _currentSettingsFile = ofd.FileName;
-                    LoadSettings();
-                    _sumdTovJoy.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                toolStripStatusLabel1.Text = "Can't load settings. " + ex.Message;
-            }
+            AboutForm aboutForm = new AboutForm();
+            aboutForm.ShowDialog();
         }
 
         private void _sumdTovJoy_NewFrameRecieved(object sender, EventArgs e)
@@ -187,7 +184,7 @@ namespace SUMDJoy
 
         #region Methods
 
-        private void LoadSettings()
+        private void LoadSettings(bool ignoreDevice = false)
         {
             if (File.Exists(_currentSettingsFile))
             {
@@ -206,7 +203,7 @@ namespace SUMDJoy
                     }
                 }
 
-                if (_sumdTovJoy.FreevJoyDevices.Contains(_settings.vJoyConfig.vJoyDevice))
+                if (!ignoreDevice && _sumdTovJoy.FreevJoyDevices.Contains(_settings.vJoyConfig.vJoyDevice))
                 {
                     _sumdTovJoy.vJoyDevice = _settings.vJoyConfig.vJoyDevice;
                     comboBoxvJoyDevice.SelectedItem = _settings.vJoyConfig.vJoyDevice;
@@ -245,6 +242,7 @@ namespace SUMDJoy
 
             toolStripStatusLabel1.Text = "Settings saved.";
         }
+
         /// <summary>
         /// Makes shure no channel has more than one Assignment
         /// </summary>
@@ -268,6 +266,30 @@ namespace SUMDJoy
             _sumdTovJoy.Stop();
             labelSumdStatus.Text = "Not connected";
 
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.AddExtension = true;
+            ofd.Multiselect = false;
+            ofd.DefaultExt = "xml";
+            ofd.ValidateNames = true;
+            ofd.Filter = "SUMDJoy XML Config File (*.xml) |*.xml";
+            ofd.RestoreDirectory = true;
+            try
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    _currentSettingsFile = ofd.FileName;
+                    LoadSettings();
+                    _sumdTovJoy.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                toolStripStatusLabel1.Text = "Can't load settings. " + ex.Message;
+            }
         }
     }
 }

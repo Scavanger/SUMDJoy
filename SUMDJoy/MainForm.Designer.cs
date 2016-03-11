@@ -1,6 +1,6 @@
 ﻿namespace SUMDJoy
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -68,21 +68,25 @@
             this.labelVJoyINfo = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.comboBoxvJoyDevice = new System.Windows.Forms.ComboBox();
-            this.buttonSave = new System.Windows.Forms.Button();
-            this.buttonLoad = new System.Windows.Forms.Button();
             this.labelSumdStatusTesx = new System.Windows.Forms.Label();
             this.labelSumdStatus = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 365);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 311);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(456, 22);
             this.statusStrip1.TabIndex = 3;
@@ -96,7 +100,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 21);
+            this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 4;
@@ -120,7 +124,7 @@
             this.comboBoxChannel1.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel1.TabIndex = 6;
             this.comboBoxChannel1.Tag = "";
-            this.comboBoxChannel1.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel1.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // comboBoxChannel2
             // 
@@ -130,7 +134,7 @@
             this.comboBoxChannel2.Name = "comboBoxChannel2";
             this.comboBoxChannel2.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel2.TabIndex = 8;
-            this.comboBoxChannel2.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel2.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label3
             // 
@@ -149,7 +153,7 @@
             this.comboBoxChannel3.Name = "comboBoxChannel3";
             this.comboBoxChannel3.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel3.TabIndex = 10;
-            this.comboBoxChannel3.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel3.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label4
             // 
@@ -168,7 +172,7 @@
             this.comboBoxChannel4.Name = "comboBoxChannel4";
             this.comboBoxChannel4.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel4.TabIndex = 12;
-            this.comboBoxChannel4.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel4.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label5
             // 
@@ -187,7 +191,7 @@
             this.comboBoxChannel8.Name = "comboBoxChannel8";
             this.comboBoxChannel8.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel8.TabIndex = 20;
-            this.comboBoxChannel8.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel8.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label6
             // 
@@ -206,7 +210,7 @@
             this.comboBoxChannel7.Name = "comboBoxChannel7";
             this.comboBoxChannel7.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel7.TabIndex = 18;
-            this.comboBoxChannel7.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel7.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label7
             // 
@@ -225,7 +229,7 @@
             this.comboBoxChannel6.Name = "comboBoxChannel6";
             this.comboBoxChannel6.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel6.TabIndex = 16;
-            this.comboBoxChannel6.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel6.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label8
             // 
@@ -244,7 +248,7 @@
             this.comboBoxChannel5.Name = "comboBoxChannel5";
             this.comboBoxChannel5.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel5.TabIndex = 14;
-            this.comboBoxChannel5.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel5.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label9
             // 
@@ -263,7 +267,7 @@
             this.comboBoxChannel16.Name = "comboBoxChannel16";
             this.comboBoxChannel16.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel16.TabIndex = 36;
-            this.comboBoxChannel16.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel16.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label10
             // 
@@ -282,7 +286,7 @@
             this.comboBoxChannel15.Name = "comboBoxChannel15";
             this.comboBoxChannel15.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel15.TabIndex = 34;
-            this.comboBoxChannel15.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel15.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label11
             // 
@@ -301,7 +305,7 @@
             this.comboBoxChannel14.Name = "comboBoxChannel14";
             this.comboBoxChannel14.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel14.TabIndex = 32;
-            this.comboBoxChannel14.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel14.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label12
             // 
@@ -320,7 +324,7 @@
             this.comboBoxChannel13.Name = "comboBoxChannel13";
             this.comboBoxChannel13.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel13.TabIndex = 30;
-            this.comboBoxChannel13.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel13.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label13
             // 
@@ -339,7 +343,7 @@
             this.comboBoxChannel12.Name = "comboBoxChannel12";
             this.comboBoxChannel12.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel12.TabIndex = 28;
-            this.comboBoxChannel12.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel12.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label14
             // 
@@ -358,7 +362,7 @@
             this.comboBoxChannel11.Name = "comboBoxChannel11";
             this.comboBoxChannel11.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel11.TabIndex = 26;
-            this.comboBoxChannel11.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel11.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label15
             // 
@@ -377,7 +381,7 @@
             this.comboBoxChannel10.Name = "comboBoxChannel10";
             this.comboBoxChannel10.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel10.TabIndex = 24;
-            this.comboBoxChannel10.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel10.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label16
             // 
@@ -396,7 +400,7 @@
             this.comboBoxChannel9.Name = "comboBoxChannel9";
             this.comboBoxChannel9.Size = new System.Drawing.Size(129, 21);
             this.comboBoxChannel9.TabIndex = 22;
-            this.comboBoxChannel9.SelectedIndexChanged += new System.EventHandler(this.comboBoxChannel_SelectedIndexChanged);
+            this.comboBoxChannel9.SelectedValueChanged += new System.EventHandler(this.comboBoxChannel_SelectedValueChanged);
             // 
             // label17
             // 
@@ -441,7 +445,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.comboBoxChannel1);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 42);
+            this.groupBox1.Location = new System.Drawing.Point(12, 45);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(429, 246);
             this.groupBox1.TabIndex = 37;
@@ -451,15 +455,15 @@
             // comboBoxComPorts
             // 
             this.comboBoxComPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxComPorts.Location = new System.Drawing.Point(73, 18);
+            this.comboBoxComPorts.Location = new System.Drawing.Point(73, 21);
             this.comboBoxComPorts.Name = "comboBoxComPorts";
             this.comboBoxComPorts.Size = new System.Drawing.Size(74, 21);
             this.comboBoxComPorts.TabIndex = 38;
-            this.comboBoxComPorts.SelectedIndexChanged += new System.EventHandler(this.comboBoxComPorts_SelectedIndexChanged);
+            this.comboBoxComPorts.SelectedValueChanged += new System.EventHandler(this.comboBoxComPorts_SelectedIndexChanged);
             // 
             // labelVJoyINfo
             // 
-            this.labelVJoyINfo.Location = new System.Drawing.Point(184, 291);
+            this.labelVJoyINfo.Location = new System.Drawing.Point(184, 294);
             this.labelVJoyINfo.Name = "labelVJoyINfo";
             this.labelVJoyINfo.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelVJoyINfo.Size = new System.Drawing.Size(263, 16);
@@ -470,7 +474,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(153, 21);
+            this.label18.Location = new System.Drawing.Point(153, 24);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(69, 13);
             this.label18.TabIndex = 40;
@@ -479,36 +483,16 @@
             // comboBoxvJoyDevice
             // 
             this.comboBoxvJoyDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxvJoyDevice.Location = new System.Drawing.Point(228, 18);
+            this.comboBoxvJoyDevice.Location = new System.Drawing.Point(228, 21);
             this.comboBoxvJoyDevice.Name = "comboBoxvJoyDevice";
             this.comboBoxvJoyDevice.Size = new System.Drawing.Size(34, 21);
             this.comboBoxvJoyDevice.TabIndex = 41;
             this.comboBoxvJoyDevice.SelectedValueChanged += new System.EventHandler(this.comboBoxvJoyDevice_SelectedValueChanged);
             // 
-            // buttonSave
-            // 
-            this.buttonSave.Location = new System.Drawing.Point(377, 337);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(70, 25);
-            this.buttonSave.TabIndex = 42;
-            this.buttonSave.Text = "&Save";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // buttonLoad
-            // 
-            this.buttonLoad.Location = new System.Drawing.Point(301, 337);
-            this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(70, 25);
-            this.buttonLoad.TabIndex = 43;
-            this.buttonLoad.Text = "&Load";
-            this.buttonLoad.UseVisualStyleBackColor = true;
-            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
-            // 
             // labelSumdStatusTesx
             // 
             this.labelSumdStatusTesx.AutoSize = true;
-            this.labelSumdStatusTesx.Location = new System.Drawing.Point(12, 291);
+            this.labelSumdStatusTesx.Location = new System.Drawing.Point(12, 294);
             this.labelSumdStatusTesx.Name = "labelSumdStatusTesx";
             this.labelSumdStatusTesx.Size = new System.Drawing.Size(75, 13);
             this.labelSumdStatusTesx.TabIndex = 44;
@@ -517,42 +501,75 @@
             // labelSumdStatus
             // 
             this.labelSumdStatus.AutoSize = true;
-            this.labelSumdStatus.Location = new System.Drawing.Point(93, 291);
+            this.labelSumdStatus.Location = new System.Drawing.Point(93, 294);
             this.labelSumdStatus.Name = "labelSumdStatus";
             this.labelSumdStatus.Size = new System.Drawing.Size(0, 13);
             this.labelSumdStatus.TabIndex = 45;
             // 
-            // button1
+            // menuStrip
             // 
-            this.button1.Location = new System.Drawing.Point(15, 307);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 25);
-            this.button1.TabIndex = 46;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolStripMenuItem1});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(456, 24);
+            this.menuStrip.TabIndex = 48;
+            this.menuStrip.Text = "menuStrip1";
             // 
-            // button2
+            // fileToolStripMenuItem
             // 
-            this.button2.Location = new System.Drawing.Point(96, 307);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(67, 25);
-            this.button2.TabIndex = 47;
-            this.button2.Text = "Stop";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveasToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "&File";
             // 
-            // Form1
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveasToolStripMenuItem
+            // 
+            this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.saveasToolStripMenuItem.Text = "Save &as ...";
+            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
+            this.toolStripMenuItem1.Text = "&?";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "&About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 387);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(456, 333);
             this.Controls.Add(this.labelSumdStatus);
             this.Controls.Add(this.labelSumdStatusTesx);
-            this.Controls.Add(this.buttonLoad);
-            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.comboBoxvJoyDevice);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.labelVJoyINfo);
@@ -560,7 +577,9 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
-            this.Name = "Form1";
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
+            this.Name = "MainForm";
             this.Text = "SUMDJoy";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -568,6 +587,8 @@
             this.statusStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -614,12 +635,15 @@
         private System.Windows.Forms.Label labelVJoyINfo;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ComboBox comboBoxvJoyDevice;
-        private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Button buttonLoad;
         private System.Windows.Forms.Label labelSumdStatusTesx;
         private System.Windows.Forms.Label labelSumdStatus;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
