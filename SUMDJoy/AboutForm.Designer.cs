@@ -122,7 +122,7 @@
             this.Controls.Add(this.labelProductName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AboutForm";
-            this.Text = "AboutForm";
+            this.Text = "About";
             this.Load += new System.EventHandler(this.AboutForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLicence)).EndInit();
             this.ResumeLayout(false);
