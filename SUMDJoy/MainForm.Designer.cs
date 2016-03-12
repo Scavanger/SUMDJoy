@@ -501,10 +501,11 @@
             // labelSumdStatus
             // 
             this.labelSumdStatus.AutoSize = true;
-            this.labelSumdStatus.Location = new System.Drawing.Point(93, 294);
+            this.labelSumdStatus.Location = new System.Drawing.Point(84, 294);
             this.labelSumdStatus.Name = "labelSumdStatus";
-            this.labelSumdStatus.Size = new System.Drawing.Size(0, 13);
+            this.labelSumdStatus.Size = new System.Drawing.Size(43, 13);
             this.labelSumdStatus.TabIndex = 45;
+            this.labelSumdStatus.Text = "(Status)";
             // 
             // menuStrip
             // 

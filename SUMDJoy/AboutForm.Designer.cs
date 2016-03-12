@@ -83,7 +83,6 @@
             this.labelLicence.TabIndex = 4;
             this.labelLicence.Text = "(license)";
             this.labelLicence.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelLicence.Click += new System.EventHandler(this.labelLicence_Click);
             // 
             // linkLabel1
             // 
@@ -123,7 +122,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AboutForm";
             this.Text = "About";
-            this.Load += new System.EventHandler(this.AboutForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLicence)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

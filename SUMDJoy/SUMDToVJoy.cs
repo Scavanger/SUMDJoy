@@ -11,8 +11,8 @@ namespace SUMDJoy
 {
     public class SUMDToVJoy
     {
-        private const int MAX_POS = 0x1c20;
-        private const int MIN_POS = 0x41a0;
+        private const int MAX_POS = 0x41a0;
+        private const int MIN_POS = 0x1c20;
 
 
         private SUMD _sumd;

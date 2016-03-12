@@ -22,19 +22,9 @@ namespace SUMDJoy
             System.Diagnostics.Process.Start("http://www.github.com/scavanger/sumdjoy");
         }
 
-        private void AboutForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void pictureBoxLicence_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("http://creativecommons.org/licenses/by-nc-sa/4.0/");
-        }
-
-        private void labelLicence_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void button_OK_Click(object sender, EventArgs e)
