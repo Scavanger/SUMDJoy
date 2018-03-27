@@ -7,8 +7,7 @@ namespace SUMDJoy
     {
         public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue newValue)
         {
-            TValue value = default(TValue);
-            if (dict.TryGetValue(key, out value))
+            if (dict.TryGetValue(key, out TValue value))
                 dict[key] = newValue;
             else
                 dict.Add(key, newValue);

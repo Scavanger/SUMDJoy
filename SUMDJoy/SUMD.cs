@@ -65,8 +65,7 @@ namespace Scavanger.RC
 
         protected virtual void OnNewFrameRecieved()
         {
-            if (NewFrameRecieved != null)
-                NewFrameRecieved(this, new EventArgs());
+            NewFrameRecieved?.Invoke(this, new EventArgs());
         }
 
         public void SetSerialPort(string portName)

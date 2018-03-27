@@ -19,6 +19,8 @@ namespace SUMDJoy
         {
             _sumdTovJoy = new SUMDToVJoy();
             _sumdTovJoy.NewFrameRecieved += _sumdTovJoy_NewFrameRecieved;
+            //_sumdTovJoy.Error += _sumdTovJoy_Error;
+
             _settings = new Settings();
             InitializeComponent();
 
@@ -32,7 +34,6 @@ namespace SUMDJoy
                 _channelComboBoxes[i - 1].Tag = i;
                 _channelComboBoxes[i - 1].BindingContext = new BindingContext();
             }
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace SUMDJoy
                 toolStripStatusLabel1.Text = "No free vJoy Device found!";
 
             if (_sumdTovJoy.IsvJoyEnabled)
-                labelVJoyINfo.Text = _sumdTovJoy.vJoyInfo;
+                labelVJoyINfo.Text = _sumdTovJoy.VJoyInfo;
             else
                 labelVJoyINfo.Text = "vJoy Driver not enabled.";
 
@@ -63,12 +64,13 @@ namespace SUMDJoy
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.LastUserSettingsFile = _currentSettingsFile;
+            Properties.Settings.Default.LastComPort = comboBoxComPorts.SelectedItem as string;
             Properties.Settings.Default.Save();
         }
 
         #region EventHandlers
 
-        private void comboBoxComPorts_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxComPorts_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -85,9 +87,9 @@ namespace SUMDJoy
             labelSumdStatus.Text = "Not Connected";
         }
 
-        private void comboBoxvJoyDevice_SelectedValueChanged(object sender, EventArgs e)
+        private void ComboBoxvJoyDevice_SelectedValueChanged(object sender, EventArgs e)
         {
-            _sumdTovJoy.vJoyDevice = (uint)comboBoxvJoyDevice.SelectedItem;
+            _sumdTovJoy.VJoyDevice = (uint)comboBoxvJoyDevice.SelectedItem;
             _sumdTovJoy.GetvJoyInfos();
 
             SetChannelComboBoxes();
@@ -95,7 +97,7 @@ namespace SUMDJoy
 
         }
 
-        private void comboBoxChannel_SelectedValueChanged(object sender, EventArgs e)
+        private void ComboBoxChannel_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!(sender is ComboBox) && !(sender as ComboBox).Name.Contains("comboBoxChannel"))
                 return;
@@ -113,15 +115,17 @@ namespace SUMDJoy
             }
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.AddExtension = true;
-            ofd.Multiselect = false;
-            ofd.DefaultExt = "xml";
-            ofd.ValidateNames = true;
-            ofd.Filter = "SUMDJoy XML Config File (*.xml) |*.xml";
-            ofd.RestoreDirectory = true;
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                AddExtension = true,
+                Multiselect = false,
+                DefaultExt = "xml",
+                ValidateNames = true,
+                Filter = "SUMDJoy XML Config File (*.xml) |*.xml",
+                RestoreDirectory = true
+            };
             try
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -139,9 +143,10 @@ namespace SUMDJoy
             }
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 if (string.IsNullOrEmpty(_currentSettingsFile))
                     SaveAs();
                 else
@@ -155,12 +160,12 @@ namespace SUMDJoy
             }
         }
 
-        private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm aboutForm = new AboutForm();
             aboutForm.ShowDialog();
@@ -168,12 +173,22 @@ namespace SUMDJoy
 
         private void _sumdTovJoy_NewFrameRecieved(object sender, EventArgs e)
         {
-            labelSumdStatus.Text = _sumdTovJoy.SUMDStatus ? "Valid" : "Invalid";
+            UpdateStatus();
+        }
+
+        private void _sumdTovJoy_Error(object sender, EventArgs e)
+        {
+            UpdateStatus();
         }
 
         #endregion
 
         #region Methods
+
+        private void UpdateStatus()
+        {
+            labelSumdStatus.Text = _sumdTovJoy.SUMDStatus ? "Valid" : "Invalid";
+        }
 
         private void SetChannelComboBoxes()
         {
@@ -199,12 +214,12 @@ namespace SUMDJoy
             {
                 _settings.Load(_currentSettingsFile);
 
-                if (_sumdTovJoy.SerialPorts.Contains(_settings.vJoyConfig.COMPort))
+                if (_sumdTovJoy.SerialPorts.Contains(_settings.VJoyConfig.COMPort))
                 {
                     try
                     {
-                        _sumdTovJoy.SetComPort(_settings.vJoyConfig.COMPort);
-                        comboBoxComPorts.SelectedItem = _settings.vJoyConfig.COMPort;
+                        _sumdTovJoy.SetComPort(_settings.VJoyConfig.COMPort);
+                        comboBoxComPorts.SelectedItem = _settings.VJoyConfig.COMPort;
                     }
                     catch (Exception ex)
                     {
@@ -212,16 +227,16 @@ namespace SUMDJoy
                     }
                 }
 
-                if (!ignoreDevice && _sumdTovJoy.FreevJoyDevices.Contains(_settings.vJoyConfig.vJoyDevice))
+                if (!ignoreDevice && _sumdTovJoy.FreevJoyDevices.Contains(_settings.VJoyConfig.vJoyDevice))
                 {
-                    _sumdTovJoy.vJoyDevice = _settings.vJoyConfig.vJoyDevice;
-                    comboBoxvJoyDevice.SelectedItem = _settings.vJoyConfig.vJoyDevice;
+                    _sumdTovJoy.VJoyDevice = _settings.VJoyConfig.vJoyDevice;
+                    comboBoxvJoyDevice.SelectedItem = _settings.VJoyConfig.vJoyDevice;
                 }
 
                 _channelComboBoxes.ForEach(comboBox =>
                 {
                     int channel = (int)comboBox.Tag;
-                    Assignment saved = _settings.vJoyConfig.Assignments.Where(a => a.Value == channel).FirstOrDefault().Key;
+                    Assignment saved = _settings.VJoyConfig.Assignments.Where(a => a.Value == channel).FirstOrDefault().Key;
                     if (saved != null && comboBox.SelectedItem != null)
                     {
                         if (_sumdTovJoy.Assignments.ContainsKey(saved))
@@ -236,16 +251,26 @@ namespace SUMDJoy
                 Text = string.Format("{0} - {1}", Application.ProductName, Path.GetFileName(_currentSettingsFile));
                 toolStripStatusLabel1.Text = "Settings loaded.";
             }
+            else
+            {
+                string lastComPort = Properties.Settings.Default.LastComPort;
+                if (!string.IsNullOrWhiteSpace(lastComPort) && _sumdTovJoy.SerialPorts.Contains(lastComPort))
+                {
+                    comboBoxComPorts.SelectedItem = lastComPort;
+                }
+            }
         }
 
         private void SaveAs()
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.AddExtension = true;
-            sfd.DefaultExt = "xlm";
-            sfd.ValidateNames = true;
-            sfd.Filter = "SUMDJoy XML Config File (*.xml) |*.xml";
-            sfd.RestoreDirectory = true;
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                AddExtension = true,
+                DefaultExt = "xlm",
+                ValidateNames = true,
+                Filter = "SUMDJoy XML Config File (*.xml) |*.xml",
+                RestoreDirectory = true
+            };
             try
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -264,12 +289,12 @@ namespace SUMDJoy
 
         private void SaveSettings()
         {
-            _settings.vJoyConfig.Assignments = _sumdTovJoy.Assignments;
+            _settings.VJoyConfig.Assignments = _sumdTovJoy.Assignments;
 
             Text = string.Format("{0} - {1}", Application.ProductName, Path.GetFileName(_currentSettingsFile));
 
-            _settings.vJoyConfig.COMPort = comboBoxComPorts.SelectedItem as string;
-            _settings.vJoyConfig.vJoyDevice = (uint)comboBoxvJoyDevice.SelectedItem;
+            _settings.VJoyConfig.COMPort = comboBoxComPorts.SelectedItem as string;
+            _settings.VJoyConfig.vJoyDevice = (uint)comboBoxvJoyDevice.SelectedItem;
             _settings.Save(_currentSettingsFile);
             toolStripStatusLabel1.Text = "Settings saved.";
         }
@@ -287,16 +312,10 @@ namespace SUMDJoy
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _sumdTovJoy.Start();
-        }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonRescan_Click(object sender, EventArgs e)
         {
-            _sumdTovJoy.Stop();
-            labelSumdStatus.Text = "Not connected";
-
+            // (comboBoxComPorts.DataSource as BindingSource).ResetBindings(false);
         }
     }
 }

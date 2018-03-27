@@ -7,12 +7,12 @@ namespace SUMDJoy
 {
     public class Settings
     {
-        public VJoyConfig vJoyConfig { get; set; }
+        public VJoyConfig VJoyConfig { get; set; }
 
         public Settings()
         {
 
-            vJoyConfig = new VJoyConfig();
+            VJoyConfig = new VJoyConfig();
         }
 
         public void Load(string fileName)
@@ -26,7 +26,7 @@ namespace SUMDJoy
                 {
                     XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
                     DataContractSerializer serializer = new DataContractSerializer(typeof(VJoyConfig));
-                    vJoyConfig = serializer.ReadObject(reader, true) as VJoyConfig;
+                    VJoyConfig = serializer.ReadObject(reader, true) as VJoyConfig;
                 }
             }
             else
@@ -37,10 +37,11 @@ namespace SUMDJoy
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentNullException("filename");
+
             using (FileStream fs = new FileStream(fileName, FileMode.Create))
             {
                 DataContractSerializer serializer = new DataContractSerializer(typeof(VJoyConfig));
-                serializer.WriteObject(fs, vJoyConfig);
+                serializer.WriteObject(fs, VJoyConfig);
             }
         }
 

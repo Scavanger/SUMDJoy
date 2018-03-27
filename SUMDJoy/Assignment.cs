@@ -140,18 +140,18 @@ namespace SUMDJoy
     public class ButtonAssignment : Assignment
     {
         [DataMember]
-        public int ButtonNo { get; set; }
+        public int ButtonNumber { get; set; }
 
         [DataMember]
         public override string Name
         {
-            get { return "Button " + ButtonNo; }
+            get { return "Button " + ButtonNumber; }
             set { }
         }
 
         public ButtonAssignment(int buttonNo)
         {
-            ButtonNo = buttonNo;
+            ButtonNumber = buttonNo;
         }
 
         public static string GetButtonName(int buttonNo)
@@ -168,12 +168,12 @@ namespace SUMDJoy
             if ((object)a == null)
                 return false;
 
-            return a.ButtonNo == ButtonNo && a.Name == Name;
+            return a.ButtonNumber == ButtonNumber && a.Name == Name;
         }
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ ButtonNo.GetHashCode();
+            return Name.GetHashCode() ^ ButtonNumber.GetHashCode();
         }
 
         public static bool operator ==(ButtonAssignment a, ButtonAssignment b)
@@ -184,7 +184,7 @@ namespace SUMDJoy
             if (((object)a == null) || ((object)b == null))
                 return false;
 
-            return a.ButtonNo == b.ButtonNo && a.Name == b.Name;
+            return a.ButtonNumber == b.ButtonNumber && a.Name == b.Name;
         }
 
         public static bool operator !=(ButtonAssignment a, ButtonAssignment b)

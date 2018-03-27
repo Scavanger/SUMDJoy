@@ -24,7 +24,7 @@ namespace SUMDJoy
         public event EventHandler NewFrameRecieved;
 
         public bool IsvJoyEnabled { get { return _joystick.vJoyEnabled(); } }
-        public string vJoyInfo { get { return string.Format("{0} V: {1}", _joystick.GetvJoyProductString(), _joystick.GetvJoySerialNumberString()); } }
+        public string VJoyInfo { get { return string.Format("{0} V: {1}", _joystick.GetvJoyProductString(), _joystick.GetvJoySerialNumberString()); } }
 
         public bool IsAssignmentCorrect
         {
@@ -41,7 +41,7 @@ namespace SUMDJoy
         {
             get
             {
-                return vJoyDevices
+                return VJoyDevices
                     .Where(d => d.Value == VjdStat.VJD_STAT_FREE)
                     .ToDictionary(i => i.Key, i => i.Value)
                     .Keys
@@ -51,11 +51,11 @@ namespace SUMDJoy
 
         public bool SUMDStatus { get { return _sumd.IsFrameValid; } }
         public bool DriverMatch { get; private set; }
-        public uint vJoyDevice { get; set; }
-        public Dictionary<uint, VjdStat> vJoyDevices { get; private set; }
+        public uint VJoyDevice { get; set; }
+        public Dictionary<uint, VjdStat> VJoyDevices { get; private set; }
         public Dictionary<Assignment, int> Assignments { get; set; }
 
-        public int vJoyCurrentDevice
+        public int VJoyCurrentDevice
         {
             get { return _vJoyCurrentDevice; }
             set
@@ -73,11 +73,11 @@ namespace SUMDJoy
             _sumd.NewFrameRecieved += Sumd_NewFrameRecieved;
             _joystick = new vJoy();
             _joystickState = new vJoy.JoystickState();
-            vJoyDevices = new Dictionary<uint, VjdStat>();
+            VJoyDevices = new Dictionary<uint, VjdStat>();
             Assignments = new Dictionary<Assignment, int>();
 
             for (uint i = 1; i <= 16; i++)
-                vJoyDevices.Add(i, _joystick.GetVJDStatus(i));
+                VJoyDevices.Add(i, _joystick.GetVJDStatus(i));
 
             uint DllVer = 0, DrvVer = 0;
             DriverMatch = _joystick.DriverMatch(ref DllVer, ref DrvVer);
@@ -86,8 +86,7 @@ namespace SUMDJoy
 
         protected virtual void OnNewFrameRecieved()
         {
-            if (NewFrameRecieved != null)
-                NewFrameRecieved(this, new EventArgs());
+            NewFrameRecieved?.Invoke(this, new EventArgs());
         }
 
         public void SetComPort(string port)
@@ -111,28 +110,28 @@ namespace SUMDJoy
 
             Assignments.Add(new NoneAssingment(), 0);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_X))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_X))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_X), 1);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_Y))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_Y))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_Y), 2);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_Z))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_Z))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_Z), 3);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_RX))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_RX))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_RX), 4);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_RY))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_RY))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_RY), 0);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_RZ))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_RZ))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_RZ), 0);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_SL0))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_SL0))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_SL0), 0);
 
-            if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_SL1))
+            if (_joystick.GetVJDAxisExist(VJoyDevice, HID_USAGES.HID_USAGE_SL1))
                 Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_SL1), 0);
 
             //if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_WHL))
@@ -141,10 +140,10 @@ namespace SUMDJoy
             //if (_joystick.GetVJDAxisExist(vJoyDevice, HID_USAGES.HID_USAGE_POV))
             //    Assignments.Add(new AxeAssignment(HID_USAGES.HID_USAGE_POV));
 
-            for (int i = 1; i <= _joystick.GetVJDButtonNumber(vJoyDevice); i++)
+            for (int i = 1; i <= _joystick.GetVJDButtonNumber(VJoyDevice); i++)
                 Assignments.Add(new ButtonAssignment(i), i + 4);
 
-            _joystick.GetVJDAxisMax(vJoyDevice, HID_USAGES.HID_USAGE_X, ref _maxValue);
+            _joystick.GetVJDAxisMax(VJoyDevice, HID_USAGES.HID_USAGE_X, ref _maxValue);
         }
 
         private void Sumd_NewFrameRecieved(object sender, EventArgs e)
@@ -157,7 +156,7 @@ namespace SUMDJoy
                         .Wait();
 
 
-            _joystickState.bDevice = (byte)vJoyDevice;
+            _joystickState.bDevice = (byte)VJoyDevice;
 
             foreach (var assignment in Assignments)
             {
@@ -203,15 +202,15 @@ namespace SUMDJoy
                         continue;
 
                     if (_sumd.Channels[buttonChannel] > 0x2ee0)
-                        _joystickState.Buttons |= (uint)(1 << button.ButtonNo - 1);
+                        _joystickState.Buttons |= (uint)(1 << button.ButtonNumber - 1);
                     else
-                        _joystickState.Buttons &= ~((uint)(1 << button.ButtonNo - 1));
+                        _joystickState.Buttons &= ~((uint)(1 << button.ButtonNumber - 1));
 
                 }
             }
 
-            _joystick.UpdateVJD(vJoyDevice, ref _joystickState);
-            _joystick.AcquireVJD(vJoyDevice);
+            _joystick.UpdateVJD(VJoyDevice, ref _joystickState);
+            _joystick.AcquireVJD(VJoyDevice);
 
 
         }
@@ -230,6 +229,4 @@ namespace SUMDJoy
             return System.IO.Ports.SerialPort.GetPortNames();
         }
     }
-
-
 }
